@@ -77,14 +77,21 @@ document.getElementById('resumeFormElement').addEventListener('submit', async (e
     doc.text(education, 10, 95, { maxWidth: 180 });
     doc.text("Skills:", 10, 115);
     doc.text(skills, 10, 125, { maxWidth: 180 });
-
+    doc.text("Experience:", 10, 145);
+    doc.text(document.getElementById('experience').textContent, 10, 155, { maxWidth: 180 });
+    doc.text("Projects:", 10, 175);
+    doc.text(document.getElementById('projects').textContent, 10, 185, { maxWidth: 180 });
+    doc.text("Certifications:", 10, 205);
+    doc.text(document.getElementById('certifications').textContent, 10, 215, { maxWidth: 180 });
+    doc.text("Hobbies:", 10, 235);
+    doc.text(document.getElementById('hobbies').textContent, 10, 245, { maxWidth: 180 });
     doc.save("resume.pdf");
   };
 });
-// IDs of all required fields
-const fieldIds = ['name', 'email', 'phone', 'summary', 'education', 'skills'];
 
-// Show progress bar when "create resume" is clicked
+const fieldIds = ['name', 'email', 'phone', 'summary', 'education', 'skills','experience', 'projects', 'certifications', 'hobbies'];
+
+
 document.getElementById('createResumeBtn').addEventListener('click', () => {
   document.getElementById('progressBarContainer').style.display = 'block';
   updateFormProgressBar();
@@ -111,4 +118,60 @@ fieldIds.forEach(id => {
   if (el) {
     el.addEventListener('input', updateFormProgressBar);
   }
+});
+document.querySelectorAll('.template-option').forEach(item => {
+  item.addEventListener('click', function(e) {
+    e.preventDefault();
+    const value = this.getAttribute('data-value');
+    document.getElementById('templateSelect').value = value;
+    document.getElementById('templateDropdownBtn').textContent = this.textContent;
+  });
+});
+function showResumeTemplate(data, template) {
+  
+  document.getElementById('resumeTemplate1').style.display = 'none';
+  document.getElementById('resumeTemplate2').style.display = 'none';
+
+  if (template === 'template1') {
+    document.getElementById('t1Name').textContent = data.name;
+    document.getElementById('t1Email').textContent = data.email;
+    document.getElementById('t1Phone').textContent = data.phone;
+    document.getElementById('t1Summary').textContent = data.summary;
+    document.getElementById('t1Education').textContent = data.education;
+    document.getElementById('t1Skills').textContent = data.skills;
+    document.getElementById('t1Experience').textContent = data.experience;
+    document.getElementById('t1Projects').textContent = data.projects;
+    document.getElementById('t1Certifications').textContent = data.certifications;
+    document.getElementById('t1Hobbies').textContent = data.hobbies;
+    document.getElementById('resumeTemplate1').style.display = 'block';
+  } else {
+    document.getElementById('t2Name').textContent = data.name;
+    document.getElementById('t2Email').textContent = data.email;
+    document.getElementById('t2Phone').textContent = data.phone;
+    document.getElementById('t2Summary').textContent = data.summary;
+    document.getElementById('t2Education').textContent = data.education;
+    document.getElementById('t2Experience').textContent = data.experience;
+    document.getElementById('t2Projects').textContent = data.projects;
+    document.getElementById('t2Certifications').textContent = data.certifications;
+    document.getElementById('t2Hobbies').textContent = data.hobbies;
+    document.getElementById('resumeTemplate2').style.display = 'block';
+  }
+}
+
+document.getElementById('resumeFormElement').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const data = {
+    name: document.getElementById('name').value,
+    email: document.getElementById('email').value,
+    phone: document.getElementById('phone').value,
+    summary: document.getElementById('summary').value,
+    education: document.getElementById('education').value,
+    skills: document.getElementById('skills').value,
+    experience: document.getElementById('experience').value,
+    projects: document.getElementById('projects').value,
+    certifications: document.getElementById('certifications').value,
+    hobbies: document.getElementById('hobbies').value
+  };
+  const template = document.getElementById('templateSelect').value;
+  showResumeTemplate(data, template);
 });
